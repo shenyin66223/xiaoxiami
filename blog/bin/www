@@ -3,38 +3,38 @@
 /**
  * Module dependencies.
  */
-
+//www文件用于在执行 npm start 时进行代码调试
 var app = require('../app');
 var debug = require('debug')('blog:server');
-var http = require('http');
+var http = require('http');  //创建服务器必须
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '3000');  //若process没有赋值，则默认为3000
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var server = http.createServer(app);   // 创建服务器
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+server.listen(port);  //监听状态      
+server.on('error', onError); //若出错则执行这一步
+server.on('listening', onListening);  //若正常运行，则执行这一步
 
 /**
  * Normalize a port into a number, string, or false.
  */
 
-function normalizePort(val) {
-  var port = parseInt(val, 10);
+function normalizePort(val) {     
+  var port = parseInt(val, 10);  //将端口号(原为字符串)变为十进制数字
 
   if (isNaN(port)) {
     // named pipe
@@ -82,8 +82,8 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
+  var addr = server.address();  //将当前访问地址打印出来
+  var bind = typeof addr === 'string'  
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
