@@ -6,9 +6,16 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 //引入数据库配置文件
+
 var setting = require('./setting');
+//flash插件
+var flash = require('connect-flash');
+//session插件
+var session = require('express-session');
+//session存放数据库的插件
+var MongoStore = require('connect-mongo')(session);
 //引入数据库操作实例
-var db = require('./model/db');
+// var db = require('./model/db');
 //添加路由文件
 var routes = require('./routes/index');
 
@@ -25,7 +32,25 @@ app.use(bodyParser.json()); //将数据变成json格式
 app.use(bodyParser.urlencoded({ extended: false }));  //
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+//使用flash
+app.use(flash());
+//使用session
+app.use(session({
+  //加密
+  secret:setting.cookieSecret,
+  //cookie的过期时间
+  cookie:{maxAge:1000*60*60*24*30},
+  //加密
+  key:setting.db,
+  //连接数据库的地址
+  store:new MongoStore({
+    url:'mongodb://localhost/blog'
+  }),
+  //是否强制保存对话
+  resave:false,
+  //会话未修改的时候，是否保存
+  saveUninitialized:true
+}));
 //将app传递给路由函数使用
 routes(app);
 
