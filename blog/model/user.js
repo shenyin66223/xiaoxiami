@@ -52,11 +52,12 @@ User.get = function (name, callback) {
                 return callback(err);
             }
             //3.查询用户名(name)的文档
-            collection.findOne({ name: name }, function (err, user) {
+            collection.findOne({ username: name }, function (err, user) {
+                mongodb.close();
                 if (err) {
                     return callback(err);
                 }
-              callback(null, user);
+              return callback(null, user);
             })
         })
     })
